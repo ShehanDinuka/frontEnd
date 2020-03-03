@@ -43,11 +43,15 @@ wsServer.on('connection',
                 setInterval(() => {
                   // Broadcasting to all clients
                   printing();
+                  p = Math.random() * 20 + 10;
                   wsServer.clients.forEach(
 
                     client => client.send(JSON.stringify({
                       
-                      value: Math.random() * 20 + 10,
+                      close: p,
+                      high : p*1.2,
+                      low : p*0.9,
+                      open : p*1.2-p*0.3*Math.random(),
                       time: new Date()
                       
                     })));
