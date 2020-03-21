@@ -23,24 +23,10 @@ export class ChartsComponent implements OnInit {
   // lineChartData : ChartDataSets[] = [{data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices'}];
   public chart : any;
   public candleStick : any;
-  public x = [1,2];
-  public y = [{
-    O : 12,
-    H : 15,
-    L : 10,
-    C : 13
-  },{
-    O : 11,
-    H : 15,
-    L : 19,
-    C : 12
-  }];
+  
   public dataPoints =[];
   
-  data = {
-    x: 1,
-    y: [12,15,10,11]
-  };
+  public data :any = {x:new Date(),y:125};
   
 
   
@@ -53,8 +39,8 @@ export class ChartsComponent implements OnInit {
            item.time = new Date() ;
           //  item.time = formatDate(item.time, ' hh:mm:ss a', 'en-US', '+0530');
            if (item.close) {
-             let data = {x:item.time, y:item.value};
-            //  console.log(data);
+             let data = {x:item.time, y:item.close};
+              this.data = data;
 
              this.chartValues.push({
                x:item.time, 
@@ -150,70 +136,7 @@ export class ChartsComponent implements OnInit {
       }]
     });
     this.candleStick.render();
-    // this.candleStick = new Chart('candleStick', {
-    //   type: 'line',
-      
-    //   data: {
-    //     labels: this.x,
-    //     datasets: [{
-    //       data: this.dataPoints,
-    //       borderWidth: 0,
-    //       borderColor:'#00c0ef',
-    //       label: 'liveCount',
-    //       // type : 'candlestick',
-    //       pointRadius : 0
-    //     }]
-    //   },
-    //   options: {
-    //     plugins: {
-    //       filler: {
-    //           propagate: true
-    //       }
-        
-    //     },
-    //     elements: {
-    //       line: {
-    //           tension: 0 // disables bezier curves
-    //       }
-    //     },
-    //     animation : {
-    //       easing : 'easeInOutBounce',
-    //       duration : 0
-    //     },
-    //     responsive: true,
-    //     title: {
-    //       display: true,
-    //       text: "APPLE STOCK ",
-    //     },
-    //     legend: {
-    //       display: false
-    //     },
-    //     tooltips :{
-    //       enabled : true,
-    //       mode: 'y'
-    //     },
-    //     scales: {
-    //       yAxes: [{
-    //         ticks: {
-    //           beginAtZero: true,
-    //         }
-    //       }],
-    //       xAxes: [{
-    //         // type: 'time',
-    //         time: {
-    //           displayFormats: {
-    //             second: 'h:mm:ss a'
-    //           },
-    //           minUnit : 'second'
-    //         },
-    //         ticks :{
-    //           source : 'auto',
-    //           stepSize : 1.5
-    //         }
-    //       }]
-    //     }
-    //   }
-    // });
+    
   }
    changeBorderColor(chart: any){
     let dataSeries:any;
@@ -225,4 +148,7 @@ export class ChartsComponent implements OnInit {
     }
   }
   
+    buttonClicked(val:any){
+      console.log(val);
+    }
 }
