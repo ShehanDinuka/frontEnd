@@ -1,5 +1,5 @@
 <nav class="navbar navbar-dark bg-primary" id="Navbar">
-  <a class="navbar-brand" href="/">{{title}}</a>
-  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.id==0">Register</button>
-  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.id!=0">{{client.name}}</button>
+  <label class="navbar-brand" >{{title}}</label>
+  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id==0" [routerLink]="['/signup']">Register</button>
+  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id!=0">{{client.name}}</button>
 </nav>

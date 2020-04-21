@@ -1,19 +1,10 @@
 <div class="row">
-  <div class="col-md-2 d-none d-md-block bg-light sidebar">
-    <div class="sidebar-sticky">
-      <h4 id="sidebar-header"> Portfolios </h4>
-      <ul class="nav flex-column">
-        <li class="nav-item" *ngFor="let portfolio of portfolios">
-          <a class="nav-link"> <span class="feather"> {{ portfolio.name }} </span> </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+  <div class="col-md-2 d-none d-md-block  sidebar"> </div>
+    <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
     <div class="container">
       <div class="row">
         <div class="col-md-9">
-              <h4 id="body-header"> {{defaultPortfolio.name}} Portfolio </h4>
+              <h4 id="body-header"> Stock Portfolio </h4>
               <table class="table">
                 <thead>
                   <tr>
@@ -27,10 +18,10 @@
                 <tbody>
                   <tr *ngFor="let stock of stocks">
                     <td><a routerLink="/chart" routerLinkActive="active">{{stock.name}}</a></td>
-                    <td>{{stock.quantity}}</td>
-                    <td>{{stock.value}}</td>
+                    <td>{{stock.shares}}</td>
+                    <td>{{stock.amount}}</td>
                     <td>{{stock.presentPrice}}</td>
-                    <td>{{stock.quantity*stock.presentPrice}}</td>
+                    <td>{{stock.shares*stock.presentPrice}}</td>
                   </tr>
                 </tbody>
               </table>

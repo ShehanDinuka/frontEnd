@@ -1,17 +1,28 @@
 <div class="container" id="SignupContainer">
-  <form class="card" id="Signup">
-    <h4 class="card-title"> Create a new account </h4>
+  <form class="card" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <h4 class="card-title" style="text-align: center;"> Create a new account </h4>
     <div class="card-body">
       <div class="form-group">
-        <input type="text" class="form-control" id="inputName" placeholder="Name">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" formControlName="firstName"  placeholder="First Name">
       </div>
       <div class="form-group">
-        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
       </div>
       <div class="form-group">
-        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" formControlName="email" placeholder="Email">
       </div>
-      <button type="submit" class="btn btn-primary">Register</button>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" formControlName="password" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm Password">
+      </div>
+      <button    type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Register</button>
     </div> 
   </form>
 </div>

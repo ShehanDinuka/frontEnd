@@ -1,20 +1,20 @@
 
 export class Stock {
-  id: number;
+  stock_id: number;
   name: string; 
-  quantity: number;
-  value: number;
+  shares: number;
+  amount: number;
   presentPrice: number;
 
   constructor() {
-    this.id = 0;
+    this.stock_id = 0;
     this.name = "";
-    this.value = 0;
-    this.quantity = 0;
+    this.amount = 0;
+    this.shares = 0;
     this.presentPrice = 0;
   }
 
   toString(): string {
-    return 'Stock { id=' + this.id + ', name=' + this.name + ', value=' + this.value + ', quantity=' + this.quantity + ', presentPrice=' + this.presentPrice + ' }'; 
+    return 'Stock { id=' + this.stock_id + ', name=' + this.name + ', value=' + this.amount + ', quantity=' + this.shares + ', presentPrice=' + this.presentPrice + ' }'; 
   }
 }

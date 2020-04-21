@@ -1,6 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from './../services/login-service.service';
 import { Client } from './../models/client';
+import { Router, NavigationExtras } from '@angular/router';
+import { of } from 'rxjs/internal/observable/of';
+import { ThemeService } from 'ng2-charts';
 
 @Component({
   selector: 'app-login',
@@ -11,29 +14,39 @@ import { Client } from './../models/client';
 export class LoginComponent implements OnInit {
 
   @Output() loginEventEmitter = new EventEmitter();
-  
   email: string;
   password: string;
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private router: Router) { 
+  }
   ngOnInit() {
-    // Automatic login
-    this.email = "sh";
-    this.password = "shehan";
-    this.loginUser();
   }
 
   loginUser(): void {
-    let c: Client = this.loginService.validateUser(this.email, this.password); 
+    this.loginService.validateUser(this.email, this.password).subscribe((client:any)=>
+      {
+        let c:Client = <Client>JSON.parse(JSON.stringify(client));
+        // console.log("customer id "+c.user_id)
+        // this.loginEventEmitter.emit(c);
+        if(c.user_id != 0){
+          this.loginService.clientObervable.next(c);
+          this.loginService.setClient(c);
+          this.router.navigate(['/dash']);
+        }else{
+          this.loginService.clientObervable.next(c);
+        }
+        
+      }
+    ); 
     
-    if(c.id != 0) {
-      // Client has been authenticated
-      this.loginEventEmitter.emit(c);
-    }
+    // if(c.id != 0) {
+    //   // Client has been authenticated
+      
+    // }
 
     // Show client some error message and ask to enter details again.
-    this.email = undefined;
-    this.password = undefined;
+    // this.email = undefined;
+    // this.password = undefined;
   }
 
 }
