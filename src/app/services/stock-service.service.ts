@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Portfolio } from './../models/portfolio';
 import { Stock } from './../models/stock';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -9,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class StockService {
 
+  stocks : Stock[];
   constructor(private http : HttpClient) { }
 
   getAllStocks(client_id: number): Observable <any[]> {

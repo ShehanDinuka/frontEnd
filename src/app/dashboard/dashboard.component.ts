@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
         s.shares = +stock.shares;
         this.stocks.push(s);
       }
-      
+      this.stockService.stocks = this.stocks;
     });
 
   }

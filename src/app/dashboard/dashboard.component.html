@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let stock of stocks">
-                    <td><a routerLink="/chart" routerLinkActive="active">{{stock.name}}</a></td>
+                    <td><a routerLink="/chart" routerLinkActive="active" [queryParams]="{stockId: stock.stock_id}">{{stock.name}}</a></td>
                     <td>{{stock.shares}}</td>
                     <td>{{stock.amount}}</td>
                     <td>{{stock.presentPrice}}</td>

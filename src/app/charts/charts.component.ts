@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ChartDataSets, Chart } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { WebsocketService } from '../services/websocket.service';
 import { debounceTime } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import * as CanvasJS from '../../assets/canvasjs.min';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { Router, ActivatedRoute } from '@angular/router';
+import { StockService } from '../services/stock-service.service';
+import { Stock } from '../models/stock';
 
 
 
@@ -18,20 +22,18 @@ export class ChartsComponent implements OnInit {
   private url = 'ws://localhost:8088';
   public chartValues = [];
   public messages = [];
-  public min: Date = new Date();
-  public max = [];
-  // lineChartData : ChartDataSets[] = [{data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices'}];
+  
   public chart : any;
   public candleStick : any;
   
   public dataPoints =[];
   
   public data :any = {x:new Date(),y:125};
+  // @ViewChild("DashboardComponent") dashboardComponent :DashboardComponent;
+  private stock: Stock;
   
 
-  
-
-  constructor(private wsService: WebsocketService) {
+  constructor(private wsService: WebsocketService,private route: ActivatedRoute, private stockService:StockService) {
     wsService.createObservableSocket(this.url).pipe(debounceTime(500))
        .subscribe(m => {
            const item: any = JSON.parse(m);
@@ -68,20 +70,28 @@ export class ChartsComponent implements OnInit {
            console.log(this.chartValues);
        });
    }
+ 
 
   ngOnInit() {
+    let id:number ;
+    this.route.queryParams.subscribe(params => {
+      id = params['stockId'];
+    });
+
+    this.stock = this.stockService.stocks.find(stock => stock.stock_id == id);
     this.chart = new CanvasJS.Chart("lineChart", {
       zoomEnabled: true,
       title: {
-        text: "Share Value of APPLE Companies"
+        text: "Share Value of "+ this.stock.name +" Company"
       },
       axisX: {
         interval: 1,
-        title: "chart updates"
+        title: "chart updates in minutes"
       },
       axisY:{
         prefix: "$",
-        includeZero: false
+        includeZero: false,
+        title: "Stock Price"
       }, 
       toolTip: {
         // shared: true
@@ -96,7 +106,7 @@ export class ChartsComponent implements OnInit {
         yValueFormatString: "$####.00",
         xValueFormatString: "hh:mm:ss TT",
         showInLegend: true,
-        name: "Company APPLE",
+        name: "",
         dataPoints: this.chartValues
         }]
     });
@@ -107,20 +117,21 @@ export class ChartsComponent implements OnInit {
       theme: "light2", // "light1", "light2", "dark1", "dark2"
       
       title: {
-        text: "Netflix Stock Price in 2016"
+        text: "Candle Stick Chart For " + this.stock.name
       },
       subtitles: [{
-        text: "Weekly Averages"
+        text: ""
       }],
       axisX: {
         interval: 1,
         xValueType: "dateTime",
-        xValueFormatString: "hh:mm TT"
+        xValueFormatString: "hh:mm TT",
+        title: "chart updates in minutes"
       },
       axisY: {
         includeZero: false,
         prefix: "$",
-        title: "Price"
+        title: "Stock Price"
       },
       toolTip: {
         borderColor: "black" 
