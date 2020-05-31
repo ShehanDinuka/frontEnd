@@ -1,0 +1,45 @@
+<mat-card class="sellStockCard  mat-elevation-z8">
+  <div layout="row" layout-align="end end">
+    <button mat-icon-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="sellStockForm">
+
+    <!--title-->
+    <div class="app-list-name">
+      <mat-card-title>
+        Buy Stocks
+      </mat-card-title>
+    </div>
+
+    <div>
+      <mat-form-field style="width:100%">
+        <input matInput formControlName="stockName" placeholder="stock Name"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width:100%">
+        <input matInput formControlName="predict" placeholder="Predict Value"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width:100%">
+        <input matInput formControlName="amount" placeholder="Stock Amount"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width:100%">
+        <input matInput formControlName="price" placeholder="Stock Price"/>
+      </mat-form-field>
+    </div>
+
+    <!--submit button-->
+    <div class="box">
+      <div class="push">
+        <button mat-button color="warn" type="submit" style="float: right;" (click)="onSubmit()">SUBMIT</button>
+      </div>
+    </div>
+  </form>
+</mat-card>
+

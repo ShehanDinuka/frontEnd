@@ -1,15 +1,15 @@
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
-  
+
 <!-- <div class="container-fluid"> -->
 
   <div class=" container" style="height: 20%;">
-    
+
     <div class="card panel-group">
       <div class="panel panel-info">
         <div class="panel-heading" >Current Stock Price    {{data.y}}</div>
-          <div class="panel-body">You may 
-            <button type="button" class="btn btn-danger"  (click)="buttonClicked('sell')">SELL</button>
-            <button type="button" class="btn btn-success" (click)="buttonClicked('buy')">BUY</button>
+          <div class="panel-body">You may
+            <button type="button" class="btn btn-danger"  (click)="onClickSell()">SELL</button>
+            <button type="button" class="btn btn-success" (click)="onClickBuy()">BUY</button>
           </div>
         </div>
     </div>
@@ -21,14 +21,14 @@
           <div id="lineChart"></div>
         </div>
       </div>
-      
+
       <div class="col-md-6">
         <div style="display: block">
           <div id="candleStick"></div>
         </div>
       </div>
     </div>
-    
+
   </div>
 
 <!-- </div> -->
