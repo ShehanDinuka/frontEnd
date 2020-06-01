@@ -9,7 +9,7 @@ import {DashboardComponent} from '../dashboard/dashboard.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {StockService} from '../services/stock-service.service';
 import {Stock} from '../models/stock';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {SellPopUpComponent} from './sell-pop-up/sell-pop-up.component';
 import {BuyPopUpComponent} from './buy-pop-up/buy-pop-up.component';
 import {PopUpService} from '../services/pop-up.service';
@@ -22,7 +22,7 @@ import {PopUpService} from '../services/pop-up.service';
 })
 export class ChartsComponent implements OnInit {
 
-  private url = 'ws://localhost:8091/ws/topic/data';
+  private url = 'http://localhost:8091/ws';
   public chartValues = [];
   public messages = [];
 

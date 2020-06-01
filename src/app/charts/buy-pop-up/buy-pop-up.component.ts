@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl} from '@angular/forms';
-// @ts-ignore
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 import {StockTransaction} from '../../models/stock-transaction';
 import {PopUpService} from '../../services/pop-up.service';
 
@@ -16,8 +14,8 @@ export class BuyPopUpComponent implements OnInit {
   buyStockForm: any;
   stockData: StockTransaction;
 
-  constructor(public dialogRef: MatDialogRef<BuyPopUpComponent>, public formBuilder: FormBuilder, public snackBar: MatSnackBar
-    , public popUpService: PopUpService) {
+  constructor(public dialogRef: MatDialogRef<BuyPopUpComponent>, public formBuilder: FormBuilder
+    , public popUpService: PopUpService, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.buyStockForm = this.formBuilder.group({
       stockName: new FormControl(this.popUpService.buyStockData.name),
       predict: new FormControl(this.popUpService.predictedValue),
@@ -46,21 +44,13 @@ export class BuyPopUpComponent implements OnInit {
   updateUserStock(stockData: StockTransaction): void {
     this.popUpService.updateUserStock(stockData).subscribe(
       res => {
-        this.openSnackbar('Successfully added stocks');
         this.dialogRef.close();
       },
       error => {
-        this.openSnackbar('Error added stocks');
+
       }
-      );
+    );
   }
 
-  openSnackbar(message) {
-    const config = new MatSnackBarConfig();
 
-    config.duration = 3000;
-    config.horizontalPosition = 'end';
-    config.verticalPosition = 'top';
-    this.snackBar.open(message, 'OK', config);
-  }
 }

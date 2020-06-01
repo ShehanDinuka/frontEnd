@@ -1,17 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
-import { SignupModule } from './signup/signup.module';
-import { ChartsModule } from 'ng2-charts';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ChartsComponent } from './charts/charts.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import {AppRoutingModule} from './app-routing.module';
+import {SignupModule} from './signup/signup.module';
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './header/header.component';
+import {LoginComponent} from './login/login.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {ChartsComponent} from './charts/charts.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
+import {SellPopUpComponent} from './charts/sell-pop-up/sell-pop-up.component';
+import {BuyPopUpComponent} from './charts/buy-pop-up/buy-pop-up.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -19,7 +24,9 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     LoginComponent,
     DashboardComponent,
-    ChartsComponent
+    ChartsComponent,
+    SellPopUpComponent,
+    BuyPopUpComponent
   ],
   imports: [
     BrowserModule,
@@ -27,12 +34,18 @@ import { HttpClientModule } from '@angular/common/http';
     SignupModule,
     FormsModule,
     ReactiveFormsModule,
-    ChartsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [BuyPopUpComponent, SellPopUpComponent],
+  entryComponents: [BuyPopUpComponent, SellPopUpComponent],
   bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {
+}
