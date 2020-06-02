@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import {ChartDataSets, Chart} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {WebsocketService} from '../services/websocket.service';
@@ -9,10 +9,11 @@ import {DashboardComponent} from '../dashboard/dashboard.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {StockService} from '../services/stock-service.service';
 import {Stock} from '../models/stock';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {SellPopUpComponent} from './sell-pop-up/sell-pop-up.component';
 import {BuyPopUpComponent} from './buy-pop-up/buy-pop-up.component';
 import {PopUpService} from '../services/pop-up.service';
+import {Observable} from 'rxjs';
 
 
 @Component({
@@ -20,12 +21,12 @@ import {PopUpService} from '../services/pop-up.service';
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.css']
 })
-export class ChartsComponent implements OnInit {
+export class ChartsComponent implements OnInit, OnDestroy {
 
-  private url = 'http://localhost:8091/ws';
+  private url = 'ws://localhost:8091/ws';
   public chartValues = [];
   public messages = [];
-
+  private dataPath = '/topic/stockData';
   public chart: any;
   public candleStick: any;
 
@@ -34,14 +35,18 @@ export class ChartsComponent implements OnInit {
   public data: any = {x: new Date(), y: 125};
   // @ViewChild("DashboardComponent") dashboardComponent :DashboardComponent;
   private stock: Stock;
+  public connection: any;
 
 
   constructor(private wsService: WebsocketService, private route: ActivatedRoute, private stockService: StockService
     , public dialog: MatDialog, public popUpService: PopUpService) {
-    wsService.createObservableSocket(this.url).pipe(debounceTime(500))
+    wsService.createSocketConnection(this.url, this.dataPath);
+    this.connection = wsService.ws.pipe(debounceTime(500))
       .subscribe(m => {
-        const item: any = JSON.parse(m);
-
+        const value: any = m;
+        const item: any = JSON.parse(value.body);
+        // this.popUpService.buyStockData.stock_id = item.stodId;
+        // this.popUpService.buyStockData.presentPrice = item.close;
         item.time = new Date();
         //  item.time = formatDate(item.time, ' hh:mm:ss a', 'en-US', '+0530');
         if (item.close) {
@@ -67,12 +72,15 @@ export class ChartsComponent implements OnInit {
         } else {
           this.messages = [...this.messages, item];
         }
-        //  this.chart.options.data[0].dataPoints = this.chartValues;
         this.chart.render();
         this.changeBorderColor(this.candleStick);
         this.candleStick.render();
         console.log(this.chartValues);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.connection;
   }
 
 

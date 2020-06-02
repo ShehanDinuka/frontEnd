@@ -27,6 +27,9 @@
     "core-js": "^2.5.4",
     "jquery": "^3.3.1",
     "ng2-charts": "^2.2.3",
+    "sockjs-client": "^1.4.0",
+    "stompjs": "^2.3.3",
+    "net": "^1.0.2",
     "pusher-js": "^5.1.1",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"

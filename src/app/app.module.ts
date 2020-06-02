@@ -17,6 +17,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
+import { NewUserDashBoardComponent } from './new-user-dash-board/new-user-dash-board.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     DashboardComponent,
     ChartsComponent,
     SellPopUpComponent,
-    BuyPopUpComponent
+    BuyPopUpComponent,
+    NewUserDashBoardComponent
   ],
   imports: [
     BrowserModule,

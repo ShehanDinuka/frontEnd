@@ -1,0 +1,7 @@
+<div>
+  <ng-container *ngFor="let stock of stocks">
+    <div>stock.name</div>
+    <div>stock.description</div>
+    <button (click)="onClick(stock.id)">Buy</button>
+  </ng-container>
+</div>
