@@ -10,7 +10,7 @@
                   <tr>
                     <th>Name</th>
                     <th>Quantity</th>
-                    <th>Average Purchased Share price </th>
+                    <th>Avg Purchased Share price </th>
                     <th>Total Spending </th>
                     <th>Total Earnings</th>
                   </tr>
@@ -19,9 +19,9 @@
                   <tr *ngFor="let stock of stocks">
                     <td><a routerLink="/chart" routerLinkActive="active" [queryParams]="{stockId: stock.stock_id}">{{stock.name}}</a></td>
                     <td>{{stock.shares}}</td>
-                    <td>{{stock.stock_amount}}</td>
-                    <td>{{stock.presentPrice}}</td>
-                    <td>{{stock.shares*stock.presentPrice}}</td>
+                    <td>{{stock.avgPrice}}</td>
+                    <td>{{stock.spending}}</td>
+                    <td>{{stock.profit}}</td>
                   </tr>
                 </tbody>
               </table>

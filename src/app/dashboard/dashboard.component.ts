@@ -35,8 +35,10 @@ export class DashboardComponent implements OnInit {
         let s: Stock = new Stock();
         s.stock_id = +stock.stockDTO.stock_id;
         s.name = stock.stockDTO.name;
-        s.stock_amount = +stock.amount;
+        s.avgPrice = +stock.price;
         s.shares = +stock.shares;
+        s.profit = +stock.profit;
+        s.spending = +stock.spending;
         this.stocks.push(s);
       }
       this.stockService.stocks = this.stocks;
