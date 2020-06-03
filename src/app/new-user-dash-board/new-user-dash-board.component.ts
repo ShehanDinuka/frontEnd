@@ -1,4 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import {Stock} from '../models/stock';
+import {StockService} from '../services/stock-service.service';
+import {UserService} from '../services/user.service';
+import {StockTransaction} from '../models/stock-transaction';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-new-user-dash-board',
@@ -6,15 +11,27 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./new-user-dash-board.component.css']
 })
 export class NewUserDashBoardComponent implements OnInit {
-
-  constructor() {
+  public stocks: Array<Stock> = new Array<Stock>();
+  public userId: number;
+  public stockTransaction: StockTransaction;
+  public amount: any = new FormControl('');
+  constructor(public stockService: StockService, public userService: UserService) {
   }
 
   ngOnInit() {
+    this.getAllStockData();
   }
 
-  onClick(id: number): void {
-
+  getAllStockData(): void {
+    this.stockService.getAllStocks().subscribe(res => {
+      this.stocks = res.body;
+    });
   }
+
+  // onClick(stockId: number): void {
+  //   this.stockTransaction.stockId = stockId;
+  //   this.stockTransaction.userId = Number(localStorage.getItem('userId'));
+  //   this.userService.addStockToUser(this.stockTransaction).subscribe(res => {});
+  // }
 
 }

@@ -10,10 +10,10 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {StockService} from '../services/stock-service.service';
 import {Stock} from '../models/stock';
 import {MatDialog} from '@angular/material/dialog';
-import {SellPopUpComponent} from './sell-pop-up/sell-pop-up.component';
-import {BuyPopUpComponent} from './buy-pop-up/buy-pop-up.component';
-import {PopUpService} from '../services/pop-up.service';
 import {Observable} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {StockTransaction} from '../models/stock-transaction';
+import {UserService} from '../services/user.service';
 
 
 @Component({
@@ -29,37 +29,40 @@ export class ChartsComponent implements OnInit, OnDestroy {
   private dataPath = '/topic/stockData';
   public chart: any;
   public candleStick: any;
-
+  public stockData: StockTransaction = new StockTransaction();
   public dataPoints = [];
 
   public data: any = {x: new Date(), y: 125};
   // @ViewChild("DashboardComponent") dashboardComponent :DashboardComponent;
   private stock: Stock;
   public connection: any;
-
+  public showSell: Boolean = false;
+  public showBuy: Boolean = false;
+  amount = new FormControl('');
+  public item: any;
 
   constructor(private wsService: WebsocketService, private route: ActivatedRoute, private stockService: StockService
-    , public dialog: MatDialog, public popUpService: PopUpService) {
+    , public dialog: MatDialog, public userService: UserService) {
     wsService.createSocketConnection(this.url, this.dataPath);
     this.connection = wsService.ws.pipe(debounceTime(500))
       .subscribe(m => {
         const value: any = m;
-        const item: any = JSON.parse(value.body);
-        // this.popUpService.buyStockData.stock_id = item.stodId;
-        // this.popUpService.buyStockData.presentPrice = item.close;
-        item.time = new Date();
+        this.item = JSON.parse(value.body);
+
+
+        this.item.time = new Date();
         //  item.time = formatDate(item.time, ' hh:mm:ss a', 'en-US', '+0530');
-        if (item.close) {
-          let data = {x: item.time, y: item.close};
+        if (this.item.close) {
+          let data = {x: this.item.time, y: this.item.close};
           this.data = data;
 
           this.chartValues.push({
-            x: item.time,
-            y: item.close
+            x: this.item.time,
+            y: this.item.close
           });
           this.dataPoints.push({
-            x: item.time,
-            y: [item.open, item.high, item.low, item.close]
+            x: this.item.time,
+            y: [this.item.open, this.item.high, this.item.low, this.item.close]
           });
           if (this.chartValues.length > 60) {
 
@@ -70,7 +73,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
             this.dataPoints.shift();
           }
         } else {
-          this.messages = [...this.messages, item];
+          this.messages = [...this.messages, this.item];
         }
         this.chart.render();
         this.changeBorderColor(this.candleStick);
@@ -176,24 +179,49 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   onClickSell(): void {
-    const dialogRef = this.dialog.open(SellPopUpComponent, {
-      width: '400px'
-    });
-    // add values
-    this.popUpService.sellStockData = null;
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The stock sell dialog was closed');
-    });
+    this.showSell = true;
+    this.showBuy = false;
   }
 
   onClickBuy(): void {
-    const dialogRef = this.dialog.open(BuyPopUpComponent, {
-      width: '400px'
-    });
-    // add values
-    this.popUpService.buyStockData = null;
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The stock buy dialog was closed');
-    });
+    this.showSell = false;
+    this.showBuy = true;
+  }
+
+  onClickClose(): void {
+    this.showSell = false;
+    this.showBuy = false;
+  }
+
+  // if type = 0 then sell type = 1 then buy
+  onClickAccept(type: number): void {
+    if (type === 0) {
+      this.stockData.userId = Number(localStorage.getItem('userId'));
+      this.stockData.stockId = this.item.stockId;
+      // this.stockData.stockId = 2;
+      this.stockData.stockShares = this.amount.value;
+      this.stockData.stockPrice = this.item.close;
+      this.stockData.buyOrSell = 0;
+      this.updateUserStock(this.stockData);
+    } else if (type === 1) {
+      this.stockData.userId = Number(localStorage.getItem('userId'));
+      this.stockData.stockId = this.item.stockId;
+      // this.stockData.stockId = 2;
+      this.stockData.stockShares = this.amount.value;
+      this.stockData.stockPrice = this.item.close;
+      this.stockData.buyOrSell = 1;
+      this.updateUserStock(this.stockData);
+    }
+  }
+
+  updateUserStock(stockData: StockTransaction): void {
+    this.userService.updateUserStocksLog(stockData).subscribe(
+      res => {
+        this.showSell = false;
+        this.showBuy = false;
+      },
+      error => {
+      }
+    );
   }
 }

@@ -4,7 +4,7 @@ import { Client } from './../models/client';
 import { Router, NavigationExtras } from '@angular/router';
 import { of } from 'rxjs/internal/observable/of';
 import { ThemeService } from 'ng2-charts';
-import {PopUpService} from '../services/pop-up.service';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   email: string;
   password: string;
 
-  constructor(private loginService: LoginService, private router: Router, public popUpService: PopUpService) {
+  constructor(private loginService: LoginService, private router: Router, public userService: UserService) {
   }
   ngOnInit() {
   }
@@ -27,7 +27,9 @@ export class LoginComponent implements OnInit {
     this.loginService.validateUser(this.email, this.password).subscribe((client:any)=>
       {
         let c:Client = <Client>JSON.parse(JSON.stringify(client));
-        this.popUpService.userId = c.user_id;
+        this.userService.userId = c.user_id;
+        localStorage.setItem('userId', c.user_id.toString());
+        localStorage.setItem('userName', c.name.toString());
         // console.log("customer id "+c.user_id)
         // this.loginEventEmitter.emit(c);
         if(c.user_id != 0){

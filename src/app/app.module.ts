@@ -11,13 +11,12 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {ChartsComponent} from './charts/charts.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
-import {SellPopUpComponent} from './charts/sell-pop-up/sell-pop-up.component';
-import {BuyPopUpComponent} from './charts/buy-pop-up/buy-pop-up.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
 import { NewUserDashBoardComponent } from './new-user-dash-board/new-user-dash-board.component';
+import { UserAddAssetsComponent } from './user-add-assets/user-add-assets.component';
 
 @NgModule({
   declarations: [
@@ -26,9 +25,8 @@ import { NewUserDashBoardComponent } from './new-user-dash-board/new-user-dash-b
     LoginComponent,
     DashboardComponent,
     ChartsComponent,
-    SellPopUpComponent,
-    BuyPopUpComponent,
-    NewUserDashBoardComponent
+    NewUserDashBoardComponent,
+    UserAddAssetsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,10 +40,8 @@ import { NewUserDashBoardComponent } from './new-user-dash-board/new-user-dash-b
     MatFormFieldModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
   ],
-  providers: [BuyPopUpComponent, SellPopUpComponent],
-  entryComponents: [BuyPopUpComponent, SellPopUpComponent],
   bootstrap: [AppComponent]
 })
 

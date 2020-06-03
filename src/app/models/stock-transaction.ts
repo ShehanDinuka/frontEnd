@@ -5,5 +5,11 @@ export class StockTransaction {
   stockPrice: number;
   buyOrSell: number;
 
-  constructor() {}
+  constructor() {
+    this.userId = 0;
+    this.stockId = 0;
+    this.stockShares = 0;
+    this.stockPrice = 0;
+    this.buyOrSell = 0;
+  }
 }

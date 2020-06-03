@@ -1,7 +1,7 @@
-<div>
+<div style="padding-left: 100px; padding-top: 10px">
+  <h1>Stock Details</h1>
   <ng-container *ngFor="let stock of stocks">
-    <div>stock.name</div>
-    <div>stock.description</div>
-    <button (click)="onClick(stock.id)">Buy</button>
+    <div>{{stock.name}}</div>
+    <div>{{stock.stock_amount}}</div>
   </ng-container>
 </div>

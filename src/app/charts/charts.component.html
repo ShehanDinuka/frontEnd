@@ -2,33 +2,52 @@
 
 <!-- <div class="container-fluid"> -->
 
-  <div class=" container" style="height: 20%;">
+<div class=" container" style="height: 20%;">
 
-    <div class="card panel-group">
-      <div class="panel panel-info">
-        <div class="panel-heading" >Current Stock Price    {{data.y}}</div>
-          <div class="panel-body">You may
-            <button type="button" class="btn btn-danger"  (click)="onClickSell()">SELL</button>
-            <button type="button" class="btn btn-success" (click)="onClickBuy()">BUY</button>
-          </div>
-        </div>
+<!--  <div class="card panel-group">-->
+<!--    <div class="panel panel-info">-->
+  <div>
+    <div class="panel-heading">Current Stock Price    {{data.y}}</div>
+    <div class="panel-body">You may
+      <button type="button" class="btn btn-danger" (click)="onClickSell()">SELL</button>
+      <button type="button" class="btn btn-success" (click)="onClickBuy()">BUY</button>
+    </div>
+    <div *ngIf="showBuy">
+      <label>
+        Buying Amount:
+        <input [formControl] = "amount" placeholder="Buying Stock Amount">
+      </label>
+      <button type="button" class="btn btn-danger" (click)="onClickAccept(1)">Accept</button>
+      <button type="button" class="btn btn-success" (click)="onClickClose()">Cancel</button>
+    </div>
+    <div *ngIf="showSell">
+      <label>
+        selling Amount:
+        <input [formControl] = "amount" placeholder="Selling Stock Amount">
+      </label>
+      <button type="button" class="btn btn-danger" (click)="onClickAccept(0)">Accept</button>
+      <button type="button" class="btn btn-success" (click)="onClickClose()">Cancel</button>
     </div>
   </div>
-  <div class="container-fluid">
-    <div class="row" style="height: 50%">
-      <div class="col-md-6">
-        <div style="display: block">
-          <div id="lineChart"></div>
-        </div>
-      </div>
 
-      <div class="col-md-6">
-        <div style="display: block">
-          <div id="candleStick"></div>
-        </div>
+<!--    </div>-->
+<!--  </div>-->
+</div>
+<div class="container-fluid">
+  <div class="row" style="height: 50%">
+    <div class="col-md-6">
+      <div style="display: block">
+        <div id="lineChart"></div>
       </div>
     </div>
 
+    <div class="col-md-6">
+      <div style="display: block">
+        <div id="candleStick"></div>
+      </div>
+    </div>
   </div>
+
+</div>
 
 <!-- </div> -->

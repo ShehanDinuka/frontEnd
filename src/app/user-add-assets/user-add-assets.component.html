@@ -1,0 +1,11 @@
+<div>
+  <h1>Add Assets To user</h1>
+  <div><h3>User Id : {{userId}}</h3></div>
+  <div><h3>User Name : {{userName}}</h3></div>
+  <div><h3>You have Assets amount: {{amount}}</h3></div>
+  <label>
+    Input Assets Amount:
+    <input [formControl] = "assets" placeholder="Assets Amount">
+  </label>
+  <button class="btn btn-success" (click)="addAssets()">Add Assets</button>
+</div>

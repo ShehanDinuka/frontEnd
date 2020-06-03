@@ -1,5 +1,19 @@
 <nav class="navbar navbar-dark bg-primary" id="Navbar">
   <label class="navbar-brand" >{{title}}</label>
   <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id==0" [routerLink]="['/signup']">Register</button>
-  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id!=0">{{client.name}}</button>
+<!--  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id!=0">{{client.name}}</button>-->
+  <div class="month-selector btn-group" *ngIf="client.user_id!=0">
+    <button type="button" data-toggle="dropdown" class="btn btn-link my-2 my-sm-0" style="color: aliceblue">
+      {{client.name}}
+    </button>
+    <ul class="dropdown-menu scrollable-menu" role="menu">
+      <li>
+        <div class="item" routerLink="/profile" routerLinkActive="active" style="text-align: center; cursor: pointer;">Your Profile</div>
+      </li>
+      <hr class="style-hr">
+      <li>
+        <div class="item"  (click)="onClickLogOut()" routerLink="/login" routerLinkActive="active" style="text-align: center; cursor: pointer;">Log Out</div>
+      </li>
+    </ul>
+  </div>
 </nav>

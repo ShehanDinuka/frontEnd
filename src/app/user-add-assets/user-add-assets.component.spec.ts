@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StockBuyingPopUpComponent } from './stock-buying-pop-up.component';
+import { UserAddAssetsComponent } from './user-add-assets.component';
 
-describe('StockBuyingPopUpComponent', () => {
-  let component: StockBuyingPopUpComponent;
-  let fixture: ComponentFixture<StockBuyingPopUpComponent>;
+describe('UserAddAssetsComponent', () => {
+  let component: UserAddAssetsComponent;
+  let fixture: ComponentFixture<UserAddAssetsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StockBuyingPopUpComponent ]
+      declarations: [ UserAddAssetsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StockBuyingPopUpComponent);
+    fixture = TestBed.createComponent(UserAddAssetsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
