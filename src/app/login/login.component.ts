@@ -21,6 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService, private router: Router, public userService: UserService) {
   }
   ngOnInit() {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
   }
 
   loginUser(): void {

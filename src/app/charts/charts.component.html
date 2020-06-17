@@ -2,31 +2,43 @@
 
 <!-- <div class="container-fluid"> -->
 
-<div class=" container" style="height: 20%;">
+<div class=" container" style="height: 30%;">
 
 <!--  <div class="card panel-group">-->
 <!--    <div class="panel panel-info">-->
-  <div>
-    <div class="panel-heading">Current Stock Price    {{data.y}}</div>
-    <div class="panel-body">You may
-      <button type="button" class="btn btn-danger" (click)="onClickSell()">SELL</button>
-      <button type="button" class="btn btn-success" (click)="onClickBuy()">BUY</button>
+  <div class="card p-4" style="background-color: rgb(39, 156, 202); color: aliceblue;">
+    <div class="card p-2" style="background-color: rgb(127, 171, 182);">
+      <table>
+        <thead>
+          <tr>
+            <th> Stock Price  --  {{data.y[0]}}</th>
+            <th>Predicted Price -- {{data.y[1]}} </th>
+            <th>Suggested Action --</th>
+          </tr>
+        </thead>
+      </table>
     </div>
-    <div *ngIf="showBuy">
+    <div class="card-header" style="background-color: cornflowerblue; border: 1cm;"> <label> <B>You May</B>  </label>
+      <button type="button" class="btn btn-danger " style="margin-left: 10px;"  
+      (click)="onClickSell()" *ngIf="!diableSell">SELL</button>
+      <button type="button" class="btn btn-success " style="margin-left: 5px;" (click)="onClickBuy()">BUY</button>
+      <label style="margin-left: 10px;"><B>Account Balance :-- {{balance}}</B></label>
+    </div>
+    <div *ngIf="showBuy" >
       <label>
-        Buying Amount:
+       <B> Buying Amount: </B> 
         <input [formControl] = "amount" placeholder="Buying Stock Amount">
       </label>
-      <button type="button" class="btn btn-danger" (click)="onClickAccept(1)">Accept</button>
-      <button type="button" class="btn btn-success" (click)="onClickClose()">Cancel</button>
+      <button type="button" class="btn btn-success" (click)="onClickAccept(1)">Accept</button>
+      <button type="button" class="btn btn-danger" (click)="onClickClose()">Cancel</button>
     </div>
     <div *ngIf="showSell">
       <label>
-        selling Amount:
+       <B> Selling Amount: </B> 
         <input [formControl] = "amount" placeholder="Selling Stock Amount">
       </label>
-      <button type="button" class="btn btn-danger" (click)="onClickAccept(0)">Accept</button>
-      <button type="button" class="btn btn-success" (click)="onClickClose()">Cancel</button>
+      <button type="button" class="btn btn-success" (click)="onClickAccept(0)">Accept</button>
+      <button type="button" class="btn btn-danger" (click)="onClickClose()">Cancel</button>
     </div>
   </div>
 
@@ -34,7 +46,7 @@
 <!--  </div>-->
 </div>
 <div class="container-fluid">
-  <div class="row" style="height: 50%">
+  <div class="row" style="height:50%">
     <div class="col-md-6">
       <div style="display: block">
         <div id="lineChart"></div>

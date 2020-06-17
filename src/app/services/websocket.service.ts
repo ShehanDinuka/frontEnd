@@ -15,6 +15,7 @@ export class WebsocketService {
   public stompClient: any;
   private url: string;
   private datapath: string;
+  private stock_id: number;
   // public createObservableSocket(url: string): Observable<string> {
   //     this.ws = new WebSocket(url);
 
@@ -25,15 +26,16 @@ export class WebsocketService {
   //         });
   //     }
 
-  public createSocketConnection(url: string, datapath: string): any {
+  public createSocketConnection(url: string, datapath: string, stock_id:number): any {
     this.url = url;
     this.datapath = datapath;
+    this.stock_id = stock_id;
     this.ws = new Subject();
     let socket = new WebSocket(url);
     this.stompClient = Stomp.over(socket);
     const _this = this;
     _this.stompClient.connect({}, function (frame) {
-      _this.stompClient.subscribe(datapath, function (sdkEvent) {
+      _this.stompClient.subscribe(datapath+"/"+stock_id, function (sdkEvent) {
         _this.ws.next(sdkEvent);
       });
     }, this.errorCallBack);
@@ -52,7 +54,7 @@ export class WebsocketService {
   public errorCallBack(error) {
     console.log('errorCallBack -> ' + error);
     setTimeout(() => {
-      this.createSocketConnection(this.url, this.datapath);
+      this.createSocketConnection(this.url, this.datapath, this.stock_id);
     }, 5000);
   }
 }

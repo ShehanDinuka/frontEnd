@@ -32,7 +32,6 @@ export class LoginService {
 
   setClient(c: Client) {
     this.client = c;
-
   }
 
   getClient(): Client {

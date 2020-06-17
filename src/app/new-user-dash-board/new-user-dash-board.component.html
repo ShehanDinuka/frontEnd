@@ -1,7 +1,36 @@
-<div style="padding-left: 100px; padding-top: 10px">
+<!-- <div style="padding-left: 100px; padding-top: 10px">
   <h1>Stock Details</h1>
   <ng-container *ngFor="let stock of stocks">
     <div>{{stock.name}}</div>
     <div>{{stock.avgPrice}}</div>
   </ng-container>
+</div> -->
+<div class="row">
+  <div class="col-md-2 d-none d-md-block  sidebar"> </div>
+    <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9">
+              <h4 style="text-align: center;"> Stock List </h4>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Company  Name</th>
+                    <th>Last Traded Price </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let stock of stocks">
+                    <td><a routerLink="/chart"  
+                      [queryParams]="{stockId: stock.stock_id,name:stock.name}">{{stock.name}}</a></td>
+                    <td>{{stock.description}}</td>
+                    <td>{{stock.stock_price}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

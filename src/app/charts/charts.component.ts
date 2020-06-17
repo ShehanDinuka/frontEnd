@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import {ChartDataSets, Chart} from 'chart.js';
-import {Color, Label} from 'ng2-charts';
+import {Color, Label, ThemeService} from 'ng2-charts';
 import {WebsocketService} from '../services/websocket.service';
 import {debounceTime} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
@@ -14,6 +14,7 @@ import {Observable} from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {StockTransaction} from '../models/stock-transaction';
 import {UserService} from '../services/user.service';
+import { LoginService } from '../services/login-service.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   private url = 'ws://localhost:8091/ws';
   public chartValues = [];
+  public predictions = [];
   public messages = [];
   private dataPath = '/topic/stockData';
   public chart: any;
@@ -33,17 +35,26 @@ export class ChartsComponent implements OnInit, OnDestroy {
   public dataPoints = [];
 
   public data: any = {x: new Date(), y: 125};
-  // @ViewChild("DashboardComponent") dashboardComponent :DashboardComponent;
   private stock: Stock;
   public connection: any;
   public showSell: Boolean = false;
   public showBuy: Boolean = false;
+  public diableSell:Boolean = false;
   amount = new FormControl('');
   public item: any;
+  public stock_id: number;
+  private stock_name: string;
+  public balance:number;
 
   constructor(private wsService: WebsocketService, private route: ActivatedRoute, private stockService: StockService
-    , public dialog: MatDialog, public userService: UserService) {
-    wsService.createSocketConnection(this.url, this.dataPath);
+    , public loginService:LoginService, public userService: UserService) {
+       
+    this.route.queryParams.subscribe(params => {
+      this.stock_id = params['stockId'];
+      this.stock_name = params['name'];
+
+    });
+    wsService.createSocketConnection(this.url, this.dataPath,this.stock_id);
     this.connection = wsService.ws.pipe(debounceTime(500))
       .subscribe(m => {
         const value: any = m;
@@ -53,13 +64,17 @@ export class ChartsComponent implements OnInit, OnDestroy {
         this.item.time = new Date();
         //  item.time = formatDate(item.time, ' hh:mm:ss a', 'en-US', '+0530');
         if (this.item.close) {
-          let data = {x: this.item.time, y: this.item.close};
+          let data = {x: this.item.time, y: [this.item.close,this.item.predict]};
           this.data = data;
 
           this.chartValues.push({
             x: this.item.time,
             y: this.item.close
           });
+          this.predictions.push({
+            x: this.item.time,
+            y: this.item.predict
+          })
           this.dataPoints.push({
             x: this.item.time,
             y: [this.item.open, this.item.high, this.item.low, this.item.close]
@@ -67,6 +82,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
           if (this.chartValues.length > 60) {
 
             this.chartValues.shift();
+          }
+          if (this.predictions.length > 60) {
+
+            this.predictions.shift();
           }
           if (this.dataPoints.length > 60) {
 
@@ -88,16 +107,20 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    let id: number;
-    this.route.queryParams.subscribe(params => {
-      id = params['stockId'];
-    });
-
-    this.stock = this.stockService.stocks.find(stock => stock.stock_id == id);
+    if(!this.stockService.stocks.length){
+      this.diableSell = true;
+    }else {
+      this.stock = this.stockService.stocks.find(stock => stock.stock_id == this.stock_id);
+      if(this.stock == null){
+        this.diableSell = true;
+      }
+    }
+    this.balance = this.loginService.getClient().assets;
     this.chart = new CanvasJS.Chart('lineChart', {
       zoomEnabled: true,
+      theme: 'dark2',
       title: {
-        text: 'Share Value of ' + this.stock.name + ' Company'
+        text: 'Share Value of ' + this.stock_name + ' Company'
       },
       axisX: {
         interval: 1,
@@ -121,18 +144,27 @@ export class ChartsComponent implements OnInit, OnDestroy {
         yValueFormatString: '$####.00',
         xValueFormatString: 'hh:mm:ss TT',
         showInLegend: true,
-        name: '',
+        name: 'Actual Price',
         dataPoints: this.chartValues
+      },{
+        type: 'line',
+        markerSize: 1,
+        xValueType: 'dateTime',
+        yValueFormatString: '$####.00',
+        xValueFormatString: 'hh:mm:ss TT',
+        showInLegend: true,
+        name: 'Predited Price',
+        dataPoints: this.predictions
       }]
     });
     this.chart.render();
 
     this.candleStick = new CanvasJS.Chart('candleStick', {
       animationEnabled: true,
-      theme: 'light2', // "light1", "light2", "dark1", "dark2"
+      theme: 'dark2', // "light1", "light2", "dark1", "dark2"
 
       title: {
-        text: 'Candle Stick Chart For ' + this.stock.name
+        text: 'Candle Stick Chart For ' + this.stock_name
       },
       subtitles: [{
         text: ''
@@ -210,7 +242,12 @@ export class ChartsComponent implements OnInit, OnDestroy {
       this.stockData.stockShares = this.amount.value;
       this.stockData.stockPrice = this.item.close;
       this.stockData.buyOrSell = 1;
-      this.updateUserStock(this.stockData);
+      if(this.diableSell){
+        this.addUserStock(this.stockData);
+      }
+      else{
+        this.updateUserStock(this.stockData);
+      }
     }
   }
 
@@ -219,6 +256,17 @@ export class ChartsComponent implements OnInit, OnDestroy {
       res => {
         this.showSell = false;
         this.showBuy = false;
+      },
+      error => {
+      }
+    );
+  }
+  addUserStock(stockData: StockTransaction): void {
+    this.userService.addStockToUser(stockData).subscribe(
+      res => {
+        this.showSell = false;
+        this.showBuy = false;
+        this.diableSell = false;
       },
       error => {
       }

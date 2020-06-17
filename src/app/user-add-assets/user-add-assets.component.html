@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h1>Add Assets To user</h1>
   <div><h3>User Id : {{userId}}</h3></div>
   <div><h3>User Name : {{userName}}</h3></div>
@@ -8,4 +8,30 @@
     <input [formControl] = "assets" placeholder="Assets Amount">
   </label>
   <button class="btn btn-success" (click)="addAssets()">Add Assets</button>
+</div> -->
+
+<div class = "container" style="margin-top: 100px; ">
+  <div class="row" style="height: fit-content;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8"  >
+      <div class="card p-4" style="background-color: lightseagreen;">
+        <h4 class="card-title" style="align-self: center;"><B> Add Assets</B> </h4>
+        <form class="card-body" >
+          <div class="form-group">
+            <label><h5> Name : {{userName}}</h5></label>
+          </div>
+          <div class="form-group">
+            <label><h5>You have Assets amount: {{amount}}</h5> </label>
+          </div>
+          <div>
+          <label><h5>
+            Input Assets Amount:</h5>
+          </label>
+          <input [formControl] = "assets" style="margin-left: 5px;background-color: lightseagreen;border-color: black;color: azure;" placeholder="Assets Amount">
+          <button class="btn btn-success" style="margin-left: 5px;" (click)="addAssets()">Add Assets</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

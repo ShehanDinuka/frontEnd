@@ -25,9 +25,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.client = this.loginService.getClient();
-    this.client.user_id = Number(localStorage.getItem('userId'));
     this.stockService.getUserStocksLog(this.client.user_id).subscribe((stocks) => {
-      if (stocks == null) {
+      if (!stocks.length) {
         this.router.navigate(['/', 'stocks']);
       }
 
