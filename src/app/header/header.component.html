@@ -2,7 +2,8 @@
   <label class="navbar-brand" >{{title}}</label>
   <div *ngIf="client.user_id!=0" style="margin-left: 1px;">
     <button class="btn btn-success" routerLink="/stocks">Stock List</button>
-    <button class="btn btn-success my-2 my-sm-0" style="margin-left: 5px;" routerLink="/dash">Portfolio</button>
+    <button class="btn btn-success my-2 my-sm-0" style="margin-left: 5px;" 
+    *ngIf ="dashboard" routerLink="/dash">Portfolio</button>
   </div>
   <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id==0" [routerLink]="['/signup']">Register</button>
 <!--  <button class="btn btn-link my-2 my-sm-0" id="RegisterButton" *ngIf="client.user_id!=0">{{client.name}}</button>-->

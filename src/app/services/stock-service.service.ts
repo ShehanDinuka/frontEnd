@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Stock} from './../models/stock';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../models/user';
 
@@ -13,8 +13,10 @@ export class StockService {
   requestOptions: any;
   requestOptions1: any;
   private apiURL = 'http://localhost:8091/';
+  dashboardObservable:Subject<Boolean>;
 
   constructor(private http: HttpClient) {
+    this.dashboardObservable = new Subject();
     this.requestOptions = {
       responseType: 'json'
     };

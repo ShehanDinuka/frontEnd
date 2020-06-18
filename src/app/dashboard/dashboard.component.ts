@@ -20,15 +20,12 @@ export class DashboardComponent implements OnInit {
   defaultPortfolio: Portfolio;
   stocks: Stock[] = [];
 
-  constructor(private loginService: LoginService, private stockService: StockService, private router: Router) {
+  constructor(private loginService: LoginService, private stockService: StockService) {
   }
 
   ngOnInit() {
     this.client = this.loginService.getClient();
     this.stockService.getUserStocksLog(this.client.user_id).subscribe((stocks) => {
-      if (!stocks.length) {
-        this.router.navigate(['/', 'stocks']);
-      }
 
       for (let stock of stocks) {
         let s: Stock = new Stock();

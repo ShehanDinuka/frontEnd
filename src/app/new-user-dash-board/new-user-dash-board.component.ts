@@ -27,6 +27,16 @@ export class NewUserDashBoardComponent implements OnInit {
       this.stocks = res.body;
     });
   }
+  getUserStockData(){
+    this.stockService.getUserStocksLog(+localStorage.getItem('userId')).subscribe(
+      res =>{
+        if(res.length){
+          this.stockService.dashboardObservable.next(true);
+        }
+
+      }
+    );
+  }
 
   // onClick(stockId: number): void {
   //   this.stockTransaction.stockId = stockId;

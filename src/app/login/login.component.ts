@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
           this.loginService.clientObervable.next(c);
           this.loginService.setClient(c);
-          this.router.navigate(['/dash']);
+          this.router.navigate(['/stocks']);
         }else{
           this.loginService.clientObervable.next(c);
         }
