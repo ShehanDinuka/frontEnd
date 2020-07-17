@@ -16,7 +16,6 @@ import {StockTransaction} from '../models/stock-transaction';
 import {UserService} from '../services/user.service';
 import { LoginService } from '../services/login-service.service';
 
-
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
@@ -45,6 +44,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
   public stock_id: number;
   private stock_name: string;
   public balance:number;
+  public decision:string;
+  public avgPrice:number = 0;
 
   constructor(private wsService: WebsocketService, private route: ActivatedRoute, private stockService: StockService
     , public loginService:LoginService, public userService: UserService) {
@@ -64,16 +65,18 @@ export class ChartsComponent implements OnInit, OnDestroy {
         this.item.time = new Date();
         //  item.time = formatDate(item.time, ' hh:mm:ss a', 'en-US', '+0530');
         if (this.item.close) {
-          let data = {x: this.item.time, y: [this.item.close,this.item.predict]};
+          let data = {x: this.item.time, y: [this.item.close,+this.item.predict]};
           this.data = data;
-
+          if(!this.diableSell){
+            this.decision = this.buyOrSell(this.avgPrice, this.item.close,+this.item.predict);
+          }
           this.chartValues.push({
             x: this.item.time,
             y: this.item.close
           });
           this.predictions.push({
             x: this.item.time,
-            y: this.item.predict
+            y: +this.item.predict
           })
           this.dataPoints.push({
             x: this.item.time,
@@ -107,10 +110,29 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    if (this.stockService.stocks == null){
+      let stocks: Stock[] = [];
+      let client = this.loginService.getClient().user_id;
+      this.stockService.getUserStocksLog(client).subscribe((stocks) => {
+
+      for (let stock of stocks) {
+        let s: Stock = new Stock();
+        s.stock_id = +stock.stockDTO.stock_id;
+        s.name = stock.stockDTO.name;
+        s.avgPrice = +stock.price;
+        s.shares = +stock.shares;
+        s.profit = +stock.profit;
+        s.spending = +stock.spending;
+        stocks.push(s);
+      }
+      this.stockService.stocks = stocks;
+    });
+    }
     if(!this.stockService.stocks.length){
       this.diableSell = true;
     }else {
       this.stock = this.stockService.stocks.find(stock => stock.stock_id == this.stock_id);
+      this.avgPrice = this.stock.avgPrice;
       if(this.stock == null){
         this.diableSell = true;
       }
@@ -271,5 +293,24 @@ export class ChartsComponent implements OnInit, OnDestroy {
       error => {
       }
     );
+  }
+  buyOrSell(avgPrice:number, currentPrice:number, predictedPrice:number):string {
+    if (avgPrice < currentPrice){
+      if(currentPrice > predictedPrice){
+        return "Sell";
+      }else{
+        return "Hold";
+      }
+    }else{
+      if(currentPrice > predictedPrice){
+        return "Hold";
+      }else{
+        if(avgPrice < predictedPrice){
+          return "Buy";
+        }else{
+          return "Hold";
+        }
+      }
+    }
   }
 }

@@ -20,6 +20,7 @@ export class NewUserDashBoardComponent implements OnInit {
 
   ngOnInit() {
     this.getAllStockData();
+    this.getUserStockData();
   }
 
   getAllStockData(): void {

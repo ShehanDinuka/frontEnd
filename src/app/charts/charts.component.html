@@ -13,7 +13,7 @@
           <tr>
             <th> Stock Price  --  {{data.y[0]}}</th>
             <th>Predicted Price -- {{data.y[1]}} </th>
-            <th>Suggested Action --</th>
+            <th *ngIf="!diableSell">Suggested Action -- {{decision}}</th>
           </tr>
         </thead>
       </table>
